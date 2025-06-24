@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: front
+  labels:
+    app: frontend
+spec: 
+  initContainers:
+  - name: validate
+    image: 'radial/busyboxplus:curl' 
+    command: ['sh','-c','until nslookup db-svc ; do echo waiting for db-svc service to start; sleep 2; done']
+  containers:
+  - name: web
+    image: nginx
+
+

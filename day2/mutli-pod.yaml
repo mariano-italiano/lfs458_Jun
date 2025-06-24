@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sidecar-pod
+spec:
+  containers:
+  - name: busybox1
+    image: busybox
+    command: ['sh', '-c', 'while true; do echo logs data ; sleep 15; done']
+  - name: web
+    image: nginx
+  - name: u22
+    image: ubuntu
+    command: ['sh', '-c', 'tail -F /var/test']

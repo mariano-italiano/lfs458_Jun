@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Książkowy Raj</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #ffe0b2, #ffcc80);
+      color: #333;
+    }
+    header {
+      background-color: #ff9800;
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+    .books {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      padding: 40px;
+    }
+    .book {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      padding: 20px;
+      width: 220px;
+      transition: transform 0.3s ease;
+    }
+    .book:hover {
+      transform: scale(1.05);
+    }
+    .book img {
+      width: 100%;
+      border-radius: 5px;
+    }
+    .book h3 {
+      margin-top: 15px;
+      color: #ff5722;
+    }
+    .book button {
+      background: #ff5722;
+      color: white;
+      padding: 10px;
+      border: none;
+      margin-top: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .book button:hover {
+      background: #e64a19;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>📚 Książkowy Raj</h1>
+    <p>Najlepsze książki w najlepszych cenach</p>
+  </header>
+
+  <section class="books">
+    <div class="book">
+      <img src="https://picsum.photos/220/300?random=1" alt="Książka 1">
+      <h3>Magia Poranka</h3>
+      <p>Autor: Hal Elrod</p>
+      <button>Kup za 39.99 zł</button>
+    </div>
+    <div class="book">
+      <img src="https://picsum.photos/220/300?random=2" alt="Książka 2">
+      <h3>Potęga Nawyku</h3>
+      <p>Autor: Charles Duhigg</p>
+      <button>Kup za 42.99 zł</button>
+    </div>
+    <div class="book">
+      <img src="https://picsum.photos/220/300?random=3" alt="Książka 3">
+      <h3>7 Nawyków</h3>
+      <p>Autor: Stephen Covey</p>
+      <button>Kup za 45.50 zł</button>
+    </div>
+  </section>
+
+</body>
+</html>
+

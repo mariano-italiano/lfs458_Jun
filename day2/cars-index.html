@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AutoExpress - Wynajem Samochodów</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e1f5fe, #b3e5fc);
+    }
+    header {
+      background-color: #0288d1;
+      color: white;
+      padding: 25px;
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
+    .cars {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      padding: 40px;
+    }
+    .car {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      width: 280px;
+      transition: transform 0.3s;
+    }
+    .car:hover {
+      transform: translateY(-5px);
+    }
+    .car img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .car h3 {
+      color: #0277bd;
+      margin-top: 15px;
+    }
+    .car button {
+      background: #0288d1;
+      color: white;
+      padding: 10px;
+      border: none;
+      margin-top: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .car button:hover {
+      background: #01579b;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🚗 AutoExpress</h1>
+    <p>Wypożycz auto już dziś – komfort, bezpieczeństwo, styl!</p>
+  </header>
+
+  <section class="cars">
+    <div class="car">
+      <img src="https://loremflickr.com/320/200/car?lock=1" alt="Auto 1">
+      <h3>BMW Seria 3</h3>
+      <p>Cena: 199 zł / dzień</p>
+      <button>Rezerwuj</button>
+    </div>
+    <div class="car">
+      <img src="https://loremflickr.com/320/200/car?lock=2" alt="Auto 2">
+      <h3>Audi A4</h3>
+      <p>Cena: 220 zł / dzień</p>
+      <button>Rezerwuj</button>
+    </div>
+    <div class="car">
+      <img src="https://loremflickr.com/320/200/car?lock=3" alt="Auto 3">
+      <h3>Volkswagen Golf</h3>
+      <p>Cena: 150 zł / dzień</p>
+      <button>Rezerwuj</button>
+    </div>
+  </section>
+
+</body>
+</html>
+

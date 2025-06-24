@@ -1,0 +1,350 @@
+kubectl get nodes
+kubectl get pods
+cd lf
+cd lfs458_Jun/
+mkdir day2
+cd day2
+ls -la
+kubectl get pods --show-labels 
+kubectl edit pod second-pod 
+kubectl get pods --show-labels 
+kubectl get pod --selector os
+kubectl get pod --selector kubernetes.io/app
+kubectl get pod --selector kubernetes.io/app=web
+kubectl get pod --help
+kubectl get po -n kube-system --show-labels 
+kubectl get po -A --show-labels -l 'tier in(control-plane), component notin(etcd)'
+kubectl get po --show-labels 
+kubectl delete pod -l kubernetes.io/app 
+kubectl get pod
+kubectl describe po test-pod 
+kubectl annotate pod test-pod appVer="application version 1.0 after fixing bug ABC-12345"
+kubectl describe po test-pod 
+kubectl annotate pod test-pod patchingLevel="2025 Q2"
+kubectl describe po test-pod 
+kubectl annotate pod test-pod patchingLevel="2025 Q3"
+kubectl annotate pod test-pod patchingLevel="2025 Q3"  --overwrite
+kubectl describe po test-pod 
+kubectl annotate pod test-pod patchingLevel-
+kubectl describe po test-pod 
+kubectl label pod test-pod newlabel=newvalue
+kubectl get pod --show-labels 
+kubectl label pod test-pod run- 
+kubectl get pod --show-labels 
+kubectl edit po test-pod 
+kubectl get pod --show-labels 
+kubectl describe pod test-pod 
+kubectl get pod --show-labels 
+vi sidecar-pod.yaml
+kubectl apply -f sidecar-pod.yaml
+kubectl get pods
+kubectl logs sidecar-pod 
+kubectl logs sidecar-pod -c sidecar 
+kubectl logs sidecar-pod --all-containers 
+kubectl exec -it sidecar-pod -- sh 
+kubectl exec -it sidecar-pod -c sidecar -- sh 
+cp -rp sidecar-pod.yaml multi-pod.yaml
+vi multi-pod.yaml
+kubectl apply -f multi-pod.yaml
+vi multi-pod.yaml
+kubectl apply -f multi-pod.yaml
+kubectl get pods
+watch -n 1 kubectl get pods
+kubectl logs multi-pod 
+kubectl logs multi-pod --all-containers 
+kubectl describe pod multi-pod 
+kubectl logs multi-pod --all-containers 
+vi multi-pod.yaml 
+kubectl get pods
+kubectl replace --force -f multi-pod.yaml
+kubectl get pods
+cd ..
+git pull
+git checkout develop 
+git branch
+ls -la
+rm -rf day*
+rm -rf *.sh
+rm -rf *.md
+ls -la
+vi index.html
+git status
+git add .
+git commit -m "create develop branch with index.html"
+git push
+git checkout master 
+ls -la
+mkdir day2
+cd day2
+ls -la
+kubectl ge tpo
+kubectl get po
+kubectl get pod sidecar-pod -o yaml > sidecar-pod.yaml
+vi sidecar-pod.yaml 
+rm sidecar-pod.yaml
+vi sidecar-pod.yaml
+cp -rp sidecar-pod.yaml multip-pod.yaml
+mv multip-pod.yaml mutli-pod.yaml
+vi mutli-pod.yaml
+cp -rp mutli-pod.yaml init-pod.yaml
+vi init-pod.yaml
+kubectl apply -f init-pod.yaml ; watch -n1 kubectl get pod 
+kubectl logs init-pod 
+kubectl logs init-pod --all-containers 
+kubectl get pod -o wide
+kubectl replace --force -f init-pod.yaml 
+kubectl get pos
+kubectl get pod
+kubectl get pod -o wide
+vi db.yaml
+kubectl apply -f db.yaml
+watch -n1 kubectl get pod
+vi db.yaml 
+kubectl describe po db 
+kubectl replace --force -f db.yaml
+watch -n1 kubectl get pod
+kubectl logs db
+kubectl top db
+kubectl top --help
+kubectl exec -it db -- bash
+kubectl get pod
+vi front.yaml
+kubectl aply -f front.yaml
+kubectl apply -f front.yaml
+vi front.yaml
+kubectl apply -f front.yaml
+watch -n1 kubectl get pod
+kubectl logs front 
+kubectl logs front --all-
+kubectl logs front --all-containers 
+watch -n1 kubectl get pod
+kubectl logs front --all-containers 
+vi \$HOME/.kube/config 
+vi $HOME/.kube/config 
+kubectl config view
+kubectl config get-contexts 
+kubectl config set-context kubernetes-admin@kubernetes 
+kubectl config view
+kubectl config use-context kubernetes-admin@kubernetes 
+kubectl get pod 
+kubectl get pod -v=9
+ls -la /etc/kubernetes/pki/
+grep client-cert $HOME/.kube/config
+grep client-cert $HOME/.kube/config | cut -d " " -f 6
+export client=$(grep client-cert $HOME/.kube/config | cut -d " " -f 6)
+echo $client 
+export key=$(grep client-key $HOME/.kube/config | cut -d " " -f 6)
+echo $key 
+export ca=$(grep certificate-authority $HOME/.kube/config | cut -d " " -f 6)
+echo $client | base64 -d - > client.pem
+vi client.pem
+echo $key | base64 -d - > client.key
+echo $ca | base64 -d - > ca.pem
+vi ca.pem
+vi client.key 
+curl https://192.168.1.100:6443/api/v1/namespaces/default/pods?limit=500
+curl -k https://192.168.1.100:6443/api/v1/namespaces/default/pods?limit=500
+curl --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/namespaces/default/pods?limit=500
+curl --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/namespaces/default/pods?limit=500 | jq -r '.items[].metadata.name'
+sudo apt  install jq -y
+curl --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/namespaces/default/pods?limit=500 | jq -r '.items[].metadata.name'
+curl -s --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/namespaces/default/pods?limit=500 | jq -r '.items[].metadata.name'
+curl -s --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/namespaces/default/pods?limit=500 | jq -r '.items[] | "Pod Name: \(.metadata.name), Status: \(.status.phase)"'
+echo "Pod Name, Status";curl -s --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/namespaces/default/pods?limit=500 | jq -r '.items[] | "\(.metadata.name), \(.status.phase)"'
+echo "Pod Name, Status";curl -s --cert client.pem --key client.key --cacert ca.pem https://192.168.1.100:6443/api/v1/namespaces | jq -r '.items[] | "\(.metadata.name), \(.status.phase)"'
+kubectl run api-pod --image nginx -v=9
+curl --cert client.pem --key client.key --cacert ca.pem -X POST https://192.168.1.100:6443/api/v1/namespaces/default/pods --data '{"kind":"Pod","apiVersion":"v1","metadata":{"name":"api-pod2","creationTimestamp":null,"labels":{"run":"api-pod"}},"spec":{"containers":[{"name":"api-pod2","image":"nginx","resources":{}}],"restartPolicy":"Always","dnsPolicy":"ClusterFirst"},"status":{}}'
+curl -v -XPOST  -H "Content-Type: application/json" -H "Accept: application/json, */*" -H "User-Agent: kubectl/v1.31.1 (linux/amd64) kubernetes/948afe5" --cert client.pem --key client.key --cacert ca.pem -X POST https://192.168.1.100:6443/api/v1/namespaces/default/pods?fieldManager=kubectl-run --data '{"kind":"Pod","apiVersion":"v1","metadata":{"name":"api-pod2","creationTimestamp":null,"labels":{"run":"api-pod"}},"spec":{"containers":[{"name":"api-pod2","image":"nginx","resources":{}}],"restartPolicy":"Always","dnsPolicy":"ClusterFirst"},"status":{}}'
+kubectl get pod
+cd /tmp
+wget --user-LFTraining --password=Pengui2014 https://cm.lf.training/LFS458/LFS458_V1.32.1_SOLUTIONS.tar.xz
+wget --user=LFTraining --password=Pengui2014 https://cm.lf.training/LFS458/LFS458_V1.32.1_SOLUTIONS.tar.xz
+wget --user=LFTraining --password=Penguin2014 https://cm.lf.training/LFS458/LFS458_V1.32.1_SOLUTIONS.tar.xz
+wget --user=LFtraining --password=Penguin2014 https://cm.lf.training/LFS458/LFS458_V1.32.1_SOLUTIONS.tar.xz
+tar xfv LFS458_V1.32.1_SOLUTIONS.tar.xz 
+cd 
+cd lfs458_Jun/day2/
+ls -la
+kubectl api-resources | grep role -i
+openssl genrsa -out devops.key
+ls -la 
+vi -la
+vi devops.key 
+openssl req -new -key devops.key -out devops.csr -subj "/CN=devops"
+cat devops.csr 
+cat devops.csr | base64 
+cat devops.csr | base64 | tr -d '\n'
+vi user-request-devops.yaml
+sudo kubeadm certs check-expiration
+sudo kubeadm certs renew 
+sudo kubeadm certs renew all 
+sudo kubeadm certs check-expiration
+vi user-request-devops.yaml
+kubectl apply -f user-request-devops.yaml
+kubectl get certificatesigningrequests.certificates.k8s.io 
+kubectl certificate approve user-request-devops
+kubectl get certificatesigningrequests.certificates.k8s.io 
+kubectl get csr user-request-devops 
+kubectl get csr user-request-devops -o yaml
+kubectl get csr user-request-devops -o jsonpath='{.status.certificate}'
+kubectl get csr user-request-devops -o jsonpath='{.status.certificate}' | base64 -d > devops.pem
+vi devops.
+vi devops.pem 
+kubectl --kubeconfig config-devops config set-cluster k8s-master --insecure-skip-tls-verify=true --server https://192.168.1.100:6443
+vi config-devops 
+kubectl --kubeconfig config-devops config set-credentials devops --client-certificate devops.pem --client-key devops.key --embed-certs=true
+vi config-devops 
+kubectl --kubeconfig config-devops config set-context k8s-default --cluster k8s-master --user=devops
+vi config-devops 
+kubectl --kubeconfig config-devops config use-context k8s-default
+vi config-devops 
+sudo useradd -m -s /bin/bash -c "Devops User to manage K8s cluster" devlops
+sudo useradd -m -s /bin/bash -c "Devops User to manage K8s cluster" devops
+sudo userdel --help
+sudo userdel -r devlops
+sudo passwd devops
+kubectl create ns devops-ns
+kubectl create -n devops-ns role --help
+kubectl create -n devops-ns role devops-role --verb=get,list,watch --resource=pods,configmaps 
+kubectl describe role -n devops-ns devops-role 
+kubectl create -n devops-ns rolebinding devops-rolebinding --help 
+kubectl create -n devops-ns rolebinding devops-rolebinding --role=devops-role --user=devops
+kubectl describe rolebindings.rbac.authorization.k8s.io -n devops-ns devops-rolebinding 
+cat config-devops 
+kubectl edit -n devops-ns role devops-role 
+kubectl describe role -n devops-ns devops-role 
+kubectl edit -n devops-ns role devops-role 
+kubectl describe role -n devops-ns devops-role 
+kubectl get pod
+kubectl get pod --show-
+kubectl get pod --show-labels 
+kubectl label pod init-pod app=init
+kubectl get pod --show-labels 
+kubectl get svc 
+kubectl expose pod init-pod --port 80 --name init-pod-svc 
+kubectl get svc 
+curl http://10.110.182.119
+kubectl expose pod init-pod --port 80 --name init-pod-np-svc --type NodePort
+kubectl get svc 
+kubectl edit svc init-pod-np-svc 
+kubectl get svc 
+kubectl expose pod init-pod --port 80 --name init-pod-lb-svc --type LoadBalancer
+kubectl get svc 
+kubectl edit svc init-pod-lb-svc 
+kubectl get svc 
+kubectl edit svc init-pod-np-svc 
+ku
+kubectl get pods -o wide
+kubectl get ep,svc,pod
+kubectl get ep,svc,pod -o wide
+kubectl exec -it test-pod -- bash
+kubectl get ep,svc,pod -o wide
+kubectl get po -n devops-ns 
+kubectl exec -it -n devops-ns test-devops-pod -- bash
+kubectl edit -n kube-system cm coredns 
+vi my-replicaset.yaml
+kubectl apply -f my-replicaset.yaml
+kubectl get rs,pods
+kubectl get rs,pods --show-labels 
+kubectl label pod test-pod tier=frontend
+kubectl get rs,pods --show-labels 
+kubectl delete pod test-pod ; watch -n1 kubectl get pods
+kubectl scale rs my-replicaset --replicas --replicas 20
+kubectl scale rs my-replicaset --replicas 20
+watch -n1 kubectl get pods
+kubectl scale rs my-replicaset --replicas 2
+watch -n1 kubectl get pods
+vi nginx-deployment.yaml
+kubectl apply -f nginx-deployment.yaml
+kubectl get pod,deploy
+kubectl get pod,rs,deploy
+kubectl describe deployments.apps nginx-deployment n
+kubectl describe deployments.apps nginx-deployment 
+kubectl edit deployments.apps nginx-deployment 
+kubectl describe deployments.apps nginx-deployment 
+kubectl edit deployments.apps nginx-deployment 
+kubectl get pods
+kubectl edit deployments.apps nginx-deployment 
+kubectl set image deployments nginx-deployment web=nginx:1.19.2
+watch -n1 kubectl get pods
+kubectl get rs,pod,deploy
+kubectl rollout history 
+kubectl rollout history deployment nginx-deployment 
+kubectl annotate deployments.apps nginx-deployment kubernetes.io/change-cause="update image from version 1.14.2 to 1.19.2, change number: GZ:1234, implementer: Marcin K., date: 24.06.2025" 
+kubectl rollout history deployment nginx-deployment 
+kubectl rollout status  deployment nginx-deployment 
+kubectl edit deployments.apps nginx-deployment 
+kubectl rollout status  deployment nginx-deployment 
+kubectl get pods
+kubectl rollout history 
+kubectl rollout history deployment nginx-deployment 
+kubectl get rs
+kubectl describe rs nginx-deployment-5ff969ffdd 
+kubectl describe rs nginx-deployment-6fdbdddbcc 
+kubectl get rs
+kubectl rollout history deployment nginx-deployment 
+kubectl set image deployments nginx-deployment web=nginx:broken
+kubectl rollout status
+kubectl rollout status deployment nginx-deployment 
+watch -n1 kubectl get pods
+kubectl get events 
+kubectl get events --sort-by .metadata.creationTimestamp
+kubectl rollout history 
+kubectl rollout history deployment nginx-deployment 
+kubectl annotate deployments.apps nginx-deployment kubernetes.io/change-cause="update to broken version"
+kubectl rollout history deployment nginx-deployment 
+kubectl rollout undo deployment nginx-deployment --to-revision 2
+kubectl rollout status deployment nginx-deployment 
+kubectl rollout history deployment nginx-deployment 
+kubectl get rs,deploy
+kubectl describe rs nginx-deployment-b7b8b8db5
+kubectl delete rs nginx-deployment-b7b8b8db5 
+kubectl rollout history deployment nginx-deployment 
+kubectl get rs
+kubectl create deployment mk-deploy --image marcinkujawski/python-api:1.0 --replicas 1 
+watch -n1 kubectl get deployments.apps 
+watch -n1 kubectl get pods
+kubectl get pod --show-labels 
+kubectl expose deployment mk-deploy --port 8080 --name mk-deploy-svc --type NodePort 
+kubectl get svc
+kubectl get pods -o wide
+kubectl describe node k8s-master 
+vi my-daemonset.yaml
+kubectl apply -f my-daemonset.yaml
+kubectl get ds,pod -o wide
+kubectl delete pod my-daemonset-4gzhj
+kubectl get ds,pod -o wide
+kubectl get ingressclasses.networking.k8s.io 
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml
+watch -n1 kubectl get all -n ingress-nginx
+kubectl edit svc -n ingress-nginx ingress-nginx-controller
+watch -n1 kubectl get all -n ingress-nginx
+kubectl get ingressclasses.networking.k8s.io 
+kubectl create deployment books --replicas 1 --image nginx
+kubectl create deployment cars --replicas 1 --image nginx
+kubectl expose deployment cars --name cars-svc --port 80 
+kubectl expose deployment books --name book-svc --port 80 
+vi books-index.html
+vi cars-index.html
+kubectl get pods
+kubectl cp books-index.html books-654947f569-jprtx:/usr/share/nginx/html/index.html
+kubectl cp cars-index.html cars-77fbf6b8b-6hf4p:/usr/share/nginx/html/index.html
+vi ingress.yaml
+kubectl apply -f ingress.yaml
+kubectl describe ingress ingress 
+kubectl get svc
+kubectl edit ingress ingress 
+kubectl describe ingress ingress 
+kubectl edit ingress ingress 
+kubectl describe ingress ingress 
+openssl req -newkey rsa:2048 -nodes -keyout website.key -out website.csr
+openssl x509 -signkey website.key -in website.csr -req -days 365 -out website.crt
+kubectl create  secret tls myweb-ssl-cert --key website.key --cert website.crt 
+kubectl get secrets myweb-ssl-cert -o yaml
+kubectl edit ingress ingress 
+kubectl describe ingress ingress 
+kubectl exec -it -n ingress-nginx ingress-nginx-controller-5794f5c579-kp58n -- bash
+cd ..
+history
+history | awk '$1 > 179' | cut -c 8- day2-history.txt
+history | awk '$1 > 179' | cut -c 8- > day2-history.txt
