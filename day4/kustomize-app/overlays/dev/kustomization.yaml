@@ -1,0 +1,9 @@
+resources:
+  - ../../base
+  - configmap.yaml
+
+patchesStrategicMerge:
+  - deployment-patch.yaml
+
+namespace: dev
+

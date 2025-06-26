@@ -1,0 +1,321 @@
+exec kubectl exec -i -t -n mk-namespace mk-app-8554c78c99-6brdq -c mk-app -- sh -c "clear; (bash || ash || sh)"
+cd lfs458_Jun/
+df -h
+helm repo list
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo list
+helm search repo bitnami/nginx
+helm search repo bitnami/wordpress
+helm install bitnami/wordpress --name my-wordpress --namespace wordpress --create-namespace 
+helm install bitnami/wordpress -n my-wordpress --namespace wordpress --create-namespace 
+helm install --help
+helm install --help | grep -i name
+helm install bitnami/wordpress --namespace wordpress --create-namespace 
+helm install bitnami/wordpress --namespace wordpress --create-namespace --generate-name
+kubectl get svc --namespace wordpress wordpress-1750933922 --template "{{ range (index .status.loadBalancer.ingress 0) }}{{ . }}{{ end }}"
+kubectl get all -n wordpress 
+kubectl get events -n wordpress 
+kubectl get pv,pvc -n wordpress 
+helm list -A
+kubectl get sc
+kubectl edit pvc -n wordpress data-wordpress-1750933922-mariadb-0 
+kubectl get pv,pvc -n wordpress 
+kubectl edit pvc -n wordpress data-wordpress-1750933922-mariadb-0 
+helm uninstall -n wordpress wordpress-1750933922
+helm show values bitnami/wordpress
+helm show values bitnami/wordpress > wordpress-values.yaml
+vi wordpress-values.yaml
+helm install bitnami/wordpress --namespace wordpress --create-namespace --generate-name --values wordpress-values.yaml 
+kubectl get pv,pvc -n wordpress 
+kubectl delete pvc -n wordpress  data-wordpress-1750933922-mariadb-0
+kubectl get pv,pvc -n wordpress 
+helm uninstall -n wordpress wordpress-1750934702
+kubectl get sc
+kubectl edit sc local-path 
+kubectl get sc
+kubectl delete pv nfs-pv 
+kubectl get pv,pvc
+kubectl get pv,pvc -A
+kubectl delete pvc -n wordpress data-wordpress-1750934702-mariadb-0 
+kubectl get pv,pvc -A
+kubectl get sc
+helm install bitnami/wordpress --namespace wordpress --create-namespace --generate-name
+kubectl get pv,pvc -A
+kubectl get ns
+kubectl get all -n local-path-storage
+kubectl get pv,pvc -A
+kubectl get pvc -n wordpress data-wordpress-1750934918-mariadb-0 -o yaml
+cd day4/
+vi wordpress-mariadb-pv.yaml
+kubectl get pvc -n wordpress wordpress-1750934918 -o yaml
+cp -rp wordpress-mariadb-pv.yaml wordpress-pv.yaml 
+vi wordpress-mariadb-pv.yaml 
+vi wordpress-pv.yaml
+kubectl apply -f wordpress-mariadb-pv.yaml
+kubectl get pv,pvc -A
+helm uninstall -n wordpress wordpress-1750934918
+kubectl edit sc local-path 
+kubectl get pv,pvc -A
+kubectl delete pvc -n wordpress data-wordpress-1750934918-mariadb-0 
+kubectl get pv,pvc -A
+kubectl delete pv wordpress-mariadb-pv 
+vi wordpress-mariadb-pv.yaml 
+vi wordpress-pv.yaml 
+kubectl apply -f wordpress-pv.yaml -f wordpress-mariadb-pv.yaml
+kubectl get pv,pvc -A
+helm install bitnami/wordpress --namespace wordpress --create-namespace --generate-name
+kubectl get pv,pvc -A
+kubectl get all -n wordpress 
+kubectl get pv,pvc -A
+kubectl get all -n wordpress 
+kubectl get events -n wordpress 
+kubectl get events -n wordpress --sort-by metadata.creationTimestamp
+kubectl top ndoes
+kubectl top nodes
+kubectl get nodes
+helm uninstall -n wordpress wordpress-1750935330
+kubectl get pv,pvc -A
+kubectl delete pvc -n wordpress data-wordpress-1750935330-mariadb-0
+kubectl get pv,pvc -A
+kubectl edit pv wordpress-pv 
+kubectl get pv,pvc -A
+kubectl edit pv wordpress-pv 
+kubectl get pv,pvc -A
+kubectl edit pv wordpress-mariadb-pv 
+kubectl get pv,pvc -A
+kubectl get pod -A
+kubectl get nodes
+kubectl top nodes
+kubectl delete all --all
+kubectl top nodes
+kubectl get nodes
+helm install bitnami/wordpress --namespace wordpress --create-namespace --generate-name
+kubectl top nodes
+kubectl get pv,pvc -A
+kubectl get all -n wordpress
+watch -n1 kubectl get all -n wordpress
+kubectl get pv,pvc -A
+kubectl top nodes
+kubectl get events -n wordpress 
+kubectl get events -n wordpress --sort-by metadata.creationTimestamp
+watch -n1 kubectl get all -n wordpress
+watch -n1 kubectl get pod -o wide
+kubectl get pod -n wordpress -o wide
+kubectl logs -n wordpress wordpress-1750935742-7844ddb75b-zmlqq
+kubectl logs -n wordpress wordpress-1750935742-7844ddb75b-zmlqq --all-
+kubectl logs -n wordpress wordpress-1750935742-7844ddb75b-zmlqq --all-containers 
+kubectl logs -n wordpress wordpress-1750935742-mariadb-0 --all-containers 
+ssh 192.168.1.120
+kubectl -n wordpress rollout restart statefulset wordpress-1750935742-mariadb 
+kubectl -n wordpress rollout restart deployment wordpress-1750935742 
+kubectl get pod -n wordpress -o wide
+kubectl delete pod -n wordpress wordpress-1750935742-7844ddb75b-zmlqq
+kubectl delete pod -n wordpress wordpress-1750935742-mariadb-0
+kubectl get pod -n wordpress -o wide
+helm install bitnami/nginx
+helm install bitnami/nginx --generate-name --namespace my-web --create-namespace
+helm list -A
+kubectl get all -n my-web
+kubectl get pod -n wordpress 
+helm list -A
+helm uninstall -n wordpress wordpress-1750935742
+kubectl get all -n wordpress 
+kubectl delete ns wordpress
+helm install my-wp bitnami/wordpress --namespace wordpress --create-namespace
+watch -n1 kubectl get pod -n wordpress 
+kubectl get pv
+kubectl patch pv wordpress-mariadb-pv -p '{"spec":{"claimRef": null}}'
+kubectl patch pv wordpress-pv -p '{"spec":{"claimRef": null}}'
+kubectl get pv,pvc
+kubectl get pv,pvc -A
+watch -n1 kubectl get pod -n wordpress 
+helm uninstall -n wordpress my-wp
+kubectl delete ns wordpress
+helm list -A
+helm fetch bitnami/nginx --untar
+ls -la
+cd nginx
+ls -la
+tree
+sudo apt  install tree
+tree
+vi values.
+vi values.yaml 
+cd ..
+rm -rf nginx/
+helm create myhelmchart
+ls -la
+cd myhelmchart
+ls -la
+tree
+vi values.yaml 
+vi Chart.yaml 
+cd templates/
+ls -la
+rm serviceaccount.yaml ingress.yaml hpa.yaml 
+ls -la 
+vi ../../helm-index.html
+kubectl create cm web-index --from-literal index.html=../../helm-index.html --dry-run=client -o yaml > configmap.yaml
+vi configmap.yaml
+kubectl create cm web-index --from-file=index.html=../../helm-index.html --dry-run=client -o yaml > configmap.yaml
+vi configmap.yaml
+vi ../values.yaml 
+vi configmap.yaml
+vi deployment.yaml 
+vi configmap.yaml
+vi ../values.yaml 
+vi configmap.yaml
+cp -rp ../../../day3/nginx-secure.yaml nginx-deployment.yaml 
+vi nginx-deployment.yaml
+vi ../values.yaml 
+vi nginx-deployment.yaml
+vi deployment.yaml 
+vi nginx-deployment.yaml
+vi ../values.yaml 
+vi nginx-deployment.yaml
+vi deployment.yaml 
+vi nginx-deployment.yaml
+vi deployment.yaml 
+vi nginx-deployment.yaml
+vi ../values.yaml 
+vi deployment.yaml 
+rm deployment.yaml 
+vi service.yaml 
+vi ../values.yaml 
+vi service.yaml 
+cd /tmp
+helm create test
+cd test/templates/
+vi deployment.yaml 
+cd 
+cd lfs458_Jun/day4/myhelmchart/templates
+vi service.yaml 
+vi ../values.yaml 
+cd ..
+helm lint myhelmchart/
+cd myhelmchart/templates/
+vi NOTES.txt 
+cd ..
+helm lint myhelmchart/
+helm package myhelmchart/ --version 0.1
+helm install my-helm-app myhelmchart-0.1.tgz --namespace my-helm-app --create-namespace
+kubectl -n my-helm-app get svc
+kubectl get all -n my-helm-app 
+kubectl exec -it -n my-helm-app nginx-deployment-6b6cbdfdf-tnzqm -- bash
+kubectl get pod,svc,ep -n my-helm-app 
+vi myhelmchart/templates/nginx-deployment.yaml 
+vi myhelmchart/templates/service.yaml 
+helm lint myhelmchart
+helm package myhelmchart/ --version 1.0 
+helm list -A
+helm uninstall my-helm-app -n my-helm-app
+helm install my-helm-app myhelmchart-1.0.tgz --namespace my-helm-app --create-namespace
+kubectl get pod,svc,ep -n my-helm-app 
+vi my-values.yaml
+cp -rp myhelmchart/values.yaml my-values.yaml
+vi my-values.yaml
+helm install my-helm-app2 myhelmchart-1.0.tgz --namespace my-helm-app2 --create-namespace --values my-values.yaml 
+kubectl get pod,svc,ep -n my-helm-app2
+vi final-app.yaml
+kubectl apply -f final-app.yaml
+watch -n1 kubectl get all -n app
+kubectl get pv,pvc -n app
+watch -n1 kubectl get all -n app
+kubectl describe -n app ingress flask-ingress 
+kubectl rollout restart -n app deployment postgres 
+watch -n1 kubectl get all -n app
+kubectl delete deployments.apps -n app postgres 
+watch -n1 kubectl get all -n app
+kubectl apply -f final-app.yaml 
+watch -n1 kubectl get all -n app
+df -h
+kubectl delete deployments.apps -n app postgres 
+watch -n1 kubectl get all -n app
+kubectl pv,pvc 
+kubectl pv,pvc -n app
+kubectl get pv,pvc -n app
+cat final-app.yaml 
+vi postgress.yaml
+kubectl apply -f postgress.yaml
+watch -n1 kubectl get all -n app
+kubectl get pods --field-selector="status.phase!=Running"
+kubectl get pods --field-selector="status.phase!=Running" -n app
+kubectl delete pods --field-selector="status.phase!=Running" -n app
+watch -n1 kubectl get all -n app
+vi postgress.yaml 
+kubectl set image -n app deployments postgres postgres=postgres:9.6.3
+watch -n1 kubectl get all -n app
+kubectl annotate deployments.apps -n app postgres kubernetes.io/change-cause="update version to 9.6.3"
+kubectl -n app rollout history 
+kubectl -n app rollout history deployment postgres 
+vi final-app.yaml 
+ls -la
+mkdir kustomize-app
+cd kustomize-app
+mkdir base overlays
+cd base/
+vi deployment.yaml
+vi service.yaml
+vi kustomization.yaml
+cd ../overlays/
+mkdir dev prod
+ls -al 
+cd dev/
+vi deployment-patch.yaml
+vi configmap.yaml
+cp ../../base/kustomization.yaml .
+vi kustomization.yaml 
+cd ..
+cd prod/
+vi configmap.yaml
+vi deployment-patch.yaml
+vi kustomization.yaml 
+cd ..
+kubectl kustomize -k overlays/prod/
+kubectl apply -k overlays/prod/
+kubectl create ns prod
+kubectl create ns dev
+kubectl apply -k overlays/prod/
+kubectl get all -n prod
+kubectl describe configmaps -n prod web-config 
+kubectl describe -n prod deployments.apps base-web-app 
+kubectl apply -k overlays/dev
+kubectl get all -n dev
+cd ..
+vi dbconnection-crd.yaml
+kubectl apply -f dbconnection-crd.yaml
+kubectl describe customresourcedefinitions.apiextensions.k8s.io dbconnections.lab.local 
+vi posstgres-db-con.yaml
+kubectl api-versions | grep lab
+kubectl api-resources | grep lab
+vi posstgres-db-con.yaml
+kubectl apply -f posstgres-db-con.yaml
+kubectl get dbconnections.lab.local 
+kubectl describe dbconnections.lab.local posstgres-db-con 
+cat ../day3/my-configmap.yaml 
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl get all -n argocd
+watch -n1 kubectl get all -n argocd
+vi argocd-ingress.yaml
+kubectl patch deployment argocd-server -n argocd --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/args", "value": ["/usr/local/bin/argocd-server","--insecure"]}]'
+kubectl edit deployments.apps argocd-server -n argocd 
+kubectl -n argocd describe ingress 
+kubectl apply -f argocd-ingress.yaml 
+kubectl -n argocd describe ingress argocd-ingress 
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
+kubectl get pods
+kubectl get cm
+kubectl get deploy
+kubectl delete deployments.apps  httpd-deployment
+kubectl get deploy
+kubectl get ds
+kubectl delete ds test-daemonset 
+kubectl delete deployments.apps  httpd-deployment
+kubectl get ds
+kubectl get deploy
+kubectl get ds
+kubectl delete deployments.apps  httpd-deployment
+kubectl delete ds test-daemonset 
+history
+history | awk '$1 > 854' | cut -c 8- > day4-history.txt

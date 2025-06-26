@@ -1,0 +1,7 @@
+1. Get the application URL by running these commands:
+
+    kubectl -n <namespace> get svc nginx-deployment-svc
+
+2. Reach application via http protocol:
+
+    http://<node-fqdn/ip>:<nodePort>

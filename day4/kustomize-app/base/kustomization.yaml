@@ -1,0 +1,8 @@
+resources:
+  - deployment.yaml
+  - service.yaml
+
+namespace: web-app
+
+namePrefix: base-
+

@@ -1,0 +1,8 @@
+apiVersion: lab.local/v1
+kind: DbConnection
+metadata:
+  name: posstgres-db-con
+spec:
+  dbType: postgres
+  dbSizeGb: 100
+  rootUser: db-admin
