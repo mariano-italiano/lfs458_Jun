@@ -1,0 +1,6 @@
+VAR1=1.0
+# branch name
+BRANCH=develop
+
+NODE_COUNT=3
+APP_PATH=/opt/test/app

@@ -1,0 +1,306 @@
+kubectl edit pod api-pod2 
+kubectl describe pod api-pod2
+watch -n1 kubectl get pods -o wide
+kubectl get nodes
+kubectl get pods
+kubectl get pods -o wide
+kubectl get pods -o wide | grep worker01 | wc -l
+kubectl get pods -o wide | grep worker02 | wc -l
+kubectl scale  deployment nginx-deployment --replicas 8
+kubectl get pods -o wide
+kubectl rollout restart deployment nginx-deployment 
+watch -n1 kubectl get pods -o wide
+kubectl get pods -o wide | grep worker01 | wc -l
+kubectl get pods -o wide | grep worker02 | wc -l
+kubectl scale  deployment nginx-deployment --replicas 1
+watch -n1 kubectl get pods -o wide
+kubectl get pods -o wide | grep worker02 | wc -l
+kubectl get pods -o wide | grep worker01 | wc -l
+cd lfs458_Jun/
+mkdir day3
+cd day3
+kubectl run nodename-pod --image nginx -o yaml --dry-run=client > nodename-pod.yaml
+vi nodename-pod.yaml
+kubectl apply -f nodename-pod.yaml
+watch -n1 kubectl get pods -o wide
+cp -rp nodename-pod.yaml nodeselector-pod.yaml
+vi nodeselector-pod.yaml
+kubectl apply -f nodeselector-pod.yaml
+kubectl  get pods
+kubectl events
+kubectl label nodes worker02 kubernetes.io/zone=dmz
+kubectl  get pods
+kubectl  get pods -o wide
+kubectl taint node worker01 kubernetes.io/env=prod:NoSchedule
+kubectl get node --show-labels 
+kubectl describe nodes | grep -i taints
+kubectl describe nodes | grep -e name -e taints
+kubectl create deployment web-deploy --image httpd --replicas 5
+kubectl  get pods -o wide
+kubectl run toleration-pod --image nginx -o yaml --dry-run=client > toleration-pod.yaml
+vi toleration-pod.yaml
+kubectl apply -f toleration-pod.yaml
+kubectl  get pods -o wide
+kubectl taint node worker01 kubernetes.io/az=secure:NoExecute
+kubectl  get pods -o wide
+kubectl taint node worker01  kubernetes.io/az-
+kubectl taint node worker01  kubernetes.io/dmz-
+kubectl taint node worker01  kubernetes.io/env-
+kubectl describe node |grep -i taint
+kubectl  get pods -o wide
+kubectl rollout restart deployment nginx-deployment 
+kubectl rollout restart deployment web-deploy 
+kubectl rollout restart deployment books 
+kubectl rollout restart deployment cars
+kubectl  get pods -o wide
+kubectl  get pods -o wide | grep worker01 | wc -l
+kubectl  get pods -o wide | grep worker02 | wc -l
+node-affinity-pod.yaml
+vi node-affinity-pod.yaml
+kubectl get nodes --show-labels 
+kubectl label node worker01 kubernetes.io/country=poland
+kubectl label node worker02 kubernetes.io/country=france
+kubectl label node worker02 kubernetes.io/storage=platinum
+kubectl apply -f node-affinity-pod.yaml 
+kubectl get pods
+kubectl get pods -o wide
+vi node-affinity-pod.yaml
+kubectl get pods -o wide --show-labels 
+kubectl get pods  --show-labels 
+kubectl label pod node-affinity-pod app=fast-storage-app
+kubectl get pods  --show-labels 
+vi pod-affinity-pod.yaml
+kubectl apply -f pod-affinity-pod.yaml
+vi pod-affinity-pod.yaml
+kubectl get pod -o wide
+kubectl apply -f pod-affinity-pod.yaml
+kubectl get pod -o wide
+cp -rp pod-affinity-pod.yaml pod-antiaffinity-pod.yaml 
+vi pod-antiaffinity-pod.yaml
+kubectl apply -f pod-antiaffinity-pod.yaml 
+kubectl get pod -o wide
+sudo crictl ps 
+sudo crictl config --set runtime-endpoint=unix:///run/containerd/containerd.sock --set image-endpoint=unix:///run/containerd/containerd.sock 
+sudo crictl ps 
+kubectl run test-1 --image nginx
+kubectl exec -it test-1 -- bash
+kubectl expose pod test-1 --name test-1-svc --port 80
+kubectl expose pod test-1 --name test-1-svc --port 80 --type NodePort
+kubectl delete svc test-1-svc 
+kubectl expose pod test-1 --name test-1-svc --port 80 --type NodePort
+kubectl get svc
+kubectl delete pod test-1 
+kubectl run test-1 --image nginx
+vi volume-pod.yaml
+kubectl apply -f volume-pod.yaml
+kubectl get pods -o wide
+kubectl exec -it volume-pod -- bash
+kubectl replace --force -f volume-pod.yaml 
+kubectl exec -it volume-pod -- bash
+kubectl get pods -o wide
+vi volume-pod.yaml 
+kubectl replace --force -f volume-pod.yaml 
+kubectl exec -it volume-pod -- bash
+vi volume-pod.yaml 
+kubectl replace --force -f volume-pod.yaml 
+kubectl exec -it volume-pod -- bash
+vi nfs-pv.yaml
+kubectl get sc 
+vi nfs-pv.yaml
+vi nfs-pvc.yaml
+kubectl apply -f nfs-pv.yaml 
+kubectl get pv
+kubectl apply -f nfs-pvc.yaml 
+kubectl get pv,pvc
+kubectl delete pvc nfs-pvc 
+vi nfs-pvc.yaml 
+kubectl apply -f nfs-pvc.yaml 
+kubectl get pv,pvc
+vi nfs-pod.yaml
+kubectl apply -f nfs-pod.yaml
+kubectl get pod 
+kubectl get pod -o wide
+kubectl exec -it nfs-pod -- bash
+kubectl expose po nfs-pod --name nfs-pod-svc --type NodePort --port 80
+kubectl label po nfs-pod app:nfs
+kubectl label po nfs-pod app=nfs
+kubectl expose po nfs-pod --name nfs-pod-svc --type NodePort --port 80
+kubectl get svc | grep nfs
+kubectl replace --force -f nfs-pod.yaml 
+kubectl get pod -o wide
+kubectl label po nfs-pod app=nfs
+kubectl delete pod nfs-pod 
+kubectl delete pvc nfs-pvc 
+kubectl get pv,pvc
+kubectl get pv nfs-pv -o yaml
+kubectl apply -f nfs-pvc.yaml 
+kubectl get pv,pvc
+kubectl edit pv nfs-pv 
+kubectl patch pv nfs-pv -p '{"spec": {"claimRef": null }}'
+kubectl get pv,pvc
+kubectl delete pv nfs-pv 
+kubectl get pv
+kubectl get pv,pvc
+kubectl edit pv nfs-pv 
+kubectl get pv,pvc
+kubectl delete pvc nfs-pvc 
+kubectl get pv,pvc
+kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.31/deploy/local-path-storage.yaml
+watch -n1 kubectl get all -n local-path-storage
+kubectl get sc 
+vi local-pvc.yaml
+vi dynamic-pvc.yaml
+cp -rp nfs-pod.yaml dynamic-pod.yaml
+vi dynamic-p
+vi dynamic-pod.yaml 
+kubectl get pv,pvc
+kubectl apply -f dynamic-pvc.yaml 
+kubectl get pv,pvc
+kubectl apply -f dynamic-pod.yaml 
+kubectl get pv,pvc
+watch -n1 kubectl get pv,pvc
+kubectl get pv,pvc
+kubectl delete pod dynamic-pod 
+kubectl delete pvc dynamic-pvc 
+watch -n1 kubectl get pv,pvc
+vi my-configmap.yaml
+kubectl apply -f my-configmap.yaml
+kubectl get cm 
+kubectl get cm my-configmap 
+kubectl get cm my-configmap -oyaml
+kubectl get cm my-configmap -o jsonpath '{.data.osVer}'
+kubectl get cm my-configmap -jsonpath '{.data.osVer}'
+kubectl get cm my-configmap -o json 
+kubectl get cm my-configmap -o jsonpath='{.data.osVer}'
+kubectl get pod
+kubectl get pod test-1 -o yaml
+kubectl get pod test-1 -o jsonpath='{.status.phase}'
+kubectl describe cm my-configmap 
+cat /etc/ssh/sshd_config|grep -v "#" 
+cat /etc/ssh/sshd_config|grep -v "#"  > sshd_config
+vi sshd_config
+cayt sshd_config 
+cat sshd_config 
+kubectl create cm my-ssh-config --from-file sshd_config 
+kubectl describe cm my-ssh-config 
+mv sshd_config config
+ls -la config 
+cat config 
+kubectl create cm another-ssh-config --from-file=SSHD_CONFIG=config 
+kubectl describe cm another-ssh-config 
+vi envFile
+kubectl create cm fromEnvFile --from-env-file envFile 
+kubectl create cm from-env-file --from-env-file envFile 
+kubectl describe cm from-env-file 
+kubectl create cm my-second-cm --from-literal serverName=k8s-master --from-literal memory=2GB --from-file config 
+kubectl get cm
+kubectl describe cm my-second-cm 
+vi configmap-pod.yaml
+kubectl apply -f configmap-pod.yaml
+vi configmap-pod.yaml
+kubectl apply -f configmap-pod.yaml
+kubectl get pods
+kubectl exec -it configmap-pod -- env 
+cp -rp configmap-pod.yaml configmap-volume-pod.yaml
+vi configmap-volume-pod.yaml
+kubectl apply -f configmap-volume-pod.yaml
+kubectl exec -it configmap-volume-pod -- bash
+kubectl exec -it configmap-volume-pod -- sh
+kubectl describe cm my-second-cm 
+kubectl get cm my-configmap -o yaml |head
+kubectl edit cm my-second-cm 
+kubectl describe cm my-second-cm 
+kubectl exec -it configmap-volume-pod -- sh
+kubectl create secret generic mariadb_creds --from-literal username=root --from-literal password=securePass123
+kubectl create secret generic mariadb-creds --from-literal username=root --from-literal password=securePass123
+kubectl get secrets mariadb-creds 
+kubectl get secrets mariadb-creds -o yaml
+echo "c2VjdXJlUGFzczEyMw==" | base64 -d
+htpasswd -c .htpasswd mariola
+sudo apt install apache2-utils -y
+htpasswd -c .htpasswd mariola
+ls -la 
+cat .htpasswd
+kubectl create secret generic nginx-htpasswd --from-file .htpasswd 
+rm .htpasswd
+vi nginx-config.yaml
+kubectl apply -f nginx-config.yaml
+kubectl create deployment nginx-secure --replicas 1 -l app=nginx-secure
+kubectl create deployment nginx-secure --replicas 1 --dry-run=client -o yaml > nginx-secure.yaml
+kubectl create deployment nginx-secure --image nginx --replicas 1 --dry-run=client -o yaml > nginx-secure.yaml
+vi nginx-secure.yaml
+kubectl apply -f nginx-secure.yaml
+kubectl get deployments.apps 
+kubectl get pods
+kubectl expose deployment nginx-secure --name nginx-secure-svc --port 80 --type NodePort
+kubectl get svc | grep secure
+ls -la
+kubectl create ns np-test 
+kubectl describe ns np-test 
+kubectl run np-nginx -n np-test --image nginx
+vi np-busybox.yaml
+kubectl apply -f np-busybox.yaml -n np-test 
+kubectl get pod -n np-test
+kubectl get pod -n np-test -o wide
+kubectl exec -it -n np-test np-busybox -- curl http://10.0.3.1
+kubectl exec -it -n np-test np-busybox -- sh
+vi my-networkpolicy.yaml
+kubectl get pod -n np-test -o wide --show-labels 
+vi my-networkpolicy.yaml
+kubectl apply -f my-networkpolicy.yaml
+kubectl exec -it -n np-test np-busybox -- sh
+vi my-networkpolicy.yaml 
+kubectl apply -f my-networkpolicy.yaml
+kubectl describe networkpolicies.networking.k8s.io -n np-test my-networkpolicy 
+kubectl exec -it -n np-test np-busybox -- sh
+kubectl exec -it -n np-test np-nginx -- bash
+kubectl create ns shop
+kubectl run shop-front --image nginx -l app=show -l type=front
+ls -la ../day1
+ls -la ../day2
+cp -rp ../day2/db.yaml .
+mv db.yaml shop-backend.yaml
+vi shop-backend.yaml
+kubectl apply -f shop-backend.yaml -n shop
+kubectl get pod -n shop 
+kubectl delete pod -n shop shop-backen 
+vi shop-backend.yaml
+kubectl delete pod shop-front 
+kubectl run shop-front --image nginx -l app=show -l type=front -n shop
+kubectl apply -f shop-backend.yaml -n shop
+kubectl get pod -n shop 
+kubectl get pod -n shop --show-labels 
+kubectl label pod -n shop app=shop
+kubectl label pod -n shop app=shop shop-front 
+kubectl get pod -n shop --show-labels 
+kubectl label pod -n shop shop-front app=shop
+kubectl get pod -n shop --show-labels 
+cp my-networkpolicy.yaml shop-networkpolicy.yaml
+vi shop-networkpolicy.yaml
+kubectl apply -f shop-networkpolicy.yaml
+kubectl describe networkpolicies.networking.k8s.io -n shop 
+kubectl -n shop exec -it shop-front -- bash
+kubectl get pod -n shop -o wide
+kubectl -n shop exec -it shop-front -- bash
+vi shop-networkpolicy.yaml
+vi shop-backend.yaml 
+kubectl apply -f shop-networkpolicy.yaml
+kubectl describe networkpolicies.networking.k8s.io -n shop 
+kubectl -n shop exec -it shop-front -- bash
+vi np-busybox.yaml 
+cp -rp np-busybox.yaml shop-busybox.yaml
+vi shop-busybox.yaml
+kubectl apply -f shop-busybox.yaml -n shop 
+kubectl get pod -n shop -o wide
+kubectl get pod -n shop -o wide --show-labels 
+kubectl describe -n shop networkpolicies.networking.k8s.io shop-networkpolicy 
+kubectl exec -it -n shop shop-busybox -- bash
+kubectl exec -it -n shop shop-busybox -- sh
+kubectl label pod -n shop  shop-busybox app=shop
+kubectl exec -it -n shop shop-busybox -- sh
+kubectl label pod -n shop  shop-busybox type=front
+kubectl get pod -n shop -o wide --show-labels 
+kubectl exec -it -n shop shop-busybox -- sh
+sudo poweroff
+history
+history | awk '$1 > 549' | cut -c 8- > lfs458_Jun/day3-history.txt
