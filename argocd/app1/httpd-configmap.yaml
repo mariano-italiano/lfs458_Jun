@@ -1,16 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: my-configmap
+  name: my-configmap2
 data:
-  key1: value1
-  osVer: "7.9"
-  multiline: |
-    to jest moj
-    string wielolinijkowy
-    ktory jest zapisany
-    w mojej config mapie
-    o nazwie
-    my-configmap
   config.json: |
     {"attr1": "value1", "attr2": "value2"}
